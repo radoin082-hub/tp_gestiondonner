@@ -1,78 +1,176 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
-@using BlazorApp1.Services;
+@using BlazorApp1.Services
 <PageTitle>Counter</PageTitle>
 
-
-@if(products != null){
+@if (products != null)
+{
     <table class="table">
-
         <thead>
             <tr>
-                <th>id</th>
-                <th>name</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Stock</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var product in products)
             {
                 <tr>
-                    
                     <td>@product.id</td>
                     <td>@product.name</td>
                     <td>@product.description</td>
                     <td>@product.price</td>
                     <td>@product.category</td>
                     <td>@product.stock</td>
-                    <td><button @onclick="() => deletedata(product.id)"><i class="fa-solid fa-trash"></i></button></td>
-                    <td><button @=""><i class="fa-solid fa-pen"></i></button></td>
+                    <td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => Editing(product)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger" @onclick="() => DeleteData(product.id)">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+
+                    </td>
                 </tr>
             }
         </tbody>
-
     </table>
 }
 
-<button @onclick="IncrementCount">Get</button>
-@* <div>
-    <input type="text" @bind="productName" />
-    <input type="text" @bind="productId" />
-    <input type="text" />
-    <input type="text" />
-    <input type="text" />
-    <input type="text" />
-    <button ">add</button>
- *@
+<button @onclick="LoadProducts">Load Products</button>
+<button @onclick="AddProduct">add produvt</button>
 
 
+@if (isAdding)
+{
+    <div class="modal">
+        <div class="modal-content">
+            <h2>Add Product</h2>
+            <input type="text" @bind="newProductName" placeholder="Product Name" />
+            @* <input type="text" @bind="newProductId" placeholder="Product ID" /> *@
+            <input type="text" @bind="newProductDescription" placeholder="Description" />
+            <input type="text" @bind="newProductPrice" placeholder="Price" />
+            <input type="text" @bind="newProductCategory" placeholder="Category" />
+            <input type="text" @bind="newProductStock" placeholder="Stock" />
+            <button @onclick="AddProduct">Add</button>
+            <button @onclick="() => isAdding = false">Cancel</button>
+        </div>
+    </div>
+}
 
-@code{
 
+@if (isEditing)
+{
+    <div class="modal">
+        <div class="modal-content">
+            <h2>Edit Product</h2>
+            <input type="text" @bind="selectedProduct.name" placeholder="Product Name" />
+            @* <input type="text" @bind="selectedProduct.id" placeholder="Product ID" disabled /> *@
+            <input type="text" @bind="selectedProduct.description" placeholder="Description" />
+            <input type="text" @bind="selectedProduct.price" placeholder="Price" />
+            <input type="text" @bind="selectedProduct.category" placeholder="Category" />
+            <input type="text" @bind="selectedProduct.stock" placeholder="Stock" />
+            <button @onclick="UpdateProduct">Update</button>
+            <button @onclick="() => isEditing = false">Cancel</button>
+        </div>
+    </div>
+}
+@code {
     private int currentCount = 0;
-    ProductService productService = new ProductService();
-    List<Product> products;
+    private ProductService productService = new ProductService();
+    private List<Product> products;
 
-    String productName, productId;
-    private void IncrementCount()
+   
+    private bool isAdding = false;
+    private string newProductName, newProductId, newProductDescription, newProductPrice, newProductCategory, newProductStock;
+
+  
+    private bool isEditing = false;
+    private Product selectedProduct;
+
+    private void LoadProducts()
     {
         currentCount++;
-
-        products = productService.readProducts("file.xml");
-
-
+        products = productService.ReadProducts("file.xml");
     }
 
-    private void addproducts()
+    private void Editing()
     {
-        productService.addProduct("file.xml", new Product(productName, productId, "", "", "",""));
-
+        rest(); 
+        isAdding = true; 
     }
-    private void deletedata(string id) 
+
+    private void AddProduct()
+    {
+        isAdding = true;
+        if (!string.IsNullOrWhiteSpace(newProductName) &&
+            !string.IsNullOrWhiteSpace(newProductDescription) &&
+            !string.IsNullOrWhiteSpace(newProductPrice) &&
+            !string.IsNullOrWhiteSpace(newProductCategory) &&
+            !string.IsNullOrWhiteSpace(newProductStock))
+        {
+           
+            string nextId = auto_increment();
+
+           
+            var newProduct = new Product(newProductName, nextId, newProductDescription, newProductPrice, newProductCategory, newProductStock);
+            productService.AddProduct("file.xml", newProduct);
+            rest();
+            LoadProducts(); 
+           
+        }
+    }
+
+    private void Editing(Product product)
+    {
+        selectedProduct = new Product(product.name, product.id, product.description, product.price, product.category, product.stock);
+        isEditing = true; 
+    }
+
+    private void UpdateProduct()
+    {
+        if (selectedProduct != null)
+        {
+             productService.UpdateProduct("file.xml", selectedProduct);
+            LoadProducts();
+            isEditing = false; 
+        }
+    }
+
+    private void DeleteData(string id)
     {
         var productToDelete = products.FirstOrDefault(p => p.id.Equals(id));
-
-        productService.deleteProduct("file.xml", productToDelete);
-
+        if (productToDelete != null)
+        {
+            productService.DeleteProduct("file.xml", productToDelete);
+            LoadProducts();
+        }
     }
 
+    private void rest()
+    {
+        newProductName = "";
+        newProductId = "";
+        newProductDescription = "";
+        newProductPrice = "";
+        newProductCategory = "";
+        newProductStock = "";
+    }
+
+    private string auto_increment()
+    {
+       
+        int maxId = products != null && products.Count > 0
+            ? products.Max(p => int.TryParse(p.id, out int id) ? id : 0)
+            : 0;
+
+        return (maxId + 1).ToString(); 
+    }
 }
