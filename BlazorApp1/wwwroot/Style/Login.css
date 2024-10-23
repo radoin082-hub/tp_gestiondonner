@@ -1,0 +1,45 @@
+﻿.content {
+    display: flex;
+    padding-top: 1.1rem;
+    justify-content: center;
+    align-items: center;
+}
+.login-page {
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8vh;
+    background-color: #6f42c1;
+    margin-top:15vh;
+}
+
+.loginform {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+    .loginform input {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        border-radius:3px;
+        margin:10px;
+        border:none;
+        padding:5px;
+        color:black;
+        font-size:1.3rem;
+    }
+    .loginform button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5vw 2.5vw;
+        border-radius: 20px;
+        margin-top: 3vh;
+        background-color: #ffe150;
+        border: none;
+        font-size: 1.1rem;
+    }
