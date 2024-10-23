@@ -1,0 +1,78 @@
+﻿@page "/counter"
+@rendermode InteractiveServer
+@using BlazorApp1.Services;
+<PageTitle>Counter</PageTitle>
+
+
+@if(products != null){
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.name</td>
+                    <td>@product.id</td>
+                    <td>@product.description</td>
+                    <td>@product.price</td>
+                    <td>@product.category</td>
+                    <td>@product.stock</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<button @onclick="IncrementCount">Get</button>
+<div>
+    <input type="text" @bind="productName" />
+    <input type="text" @bind="productId" />
+    <input type="text" />
+    <input type="text" />
+    <input type="text" />
+    <input type="text" />
+    <button @onclick="addproducts">add</button>
+
+</div>
+<div>
+   
+    <input type="text" />
+    <button @onclick="editdata">edit</button>
+
+</div>
+
+@code{
+
+    private int currentCount = 0;
+    ProductService productService = new ProductService();
+    List<Product> products;
+
+    String productName, productId;
+    private void IncrementCount()
+    {
+        currentCount++;
+
+        products = productService.readProducts("file.xml");
+
+
+    }
+
+    private void addproducts()
+    {
+        productService.addProduct("file.xml", new Product(productName, productId, "", "", "",""));
+
+    }
+    private void editdata()
+    {
+        productService.editProduct("file.xml", new Product(productName, productId, "", "", "", ""));
+
+    }
+
+}
