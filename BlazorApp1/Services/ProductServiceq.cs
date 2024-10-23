@@ -4,14 +4,18 @@ using BlazorApp1.Models;
 using System.Xml;
 using System.Linq;
 using System;
+using DotNetEnv;
 namespace BlazorApp1.Services
 {
     public class ProductService
     {
+        public ProductService()
+        {
+          
+        }
 
 
-      
-  
+
 
         public List<Product> readProducts(String path)
         {
@@ -74,15 +78,17 @@ namespace BlazorApp1.Services
 
 
 
-                var productsXML = xmlDoc.Descendants("product").FirstOrDefault(p => (string)p.Element("id") =="5");
+               /* var productsXML = xmlDoc.Descendants("product").FirstOrDefault(p => (string)p.Element("id") =="5");
 
-                /*   productsXML.Element("id")?.SetValue("5");*/
+                *//*   productsXML.Element("id")?.SetValue("5");*//*
                 productsXML.Remove();
-             
+             */
 
                 xmlDoc.Save(path);
-
-                Console.WriteLine("zeb");
+                Env.Load("key.env");
+                 path = Env.GetString("xmlkey");
+                Console.WriteLine(path);
+               
             }
             catch (Exception e)
             {
