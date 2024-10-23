@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <products>
   <product>
-    <id />
-    <name />
+    <id>1</id>
+    <name>Product One</name>
+    <description>First product description</description>
+    <price>10.99</price>
+    <category>Category A</category>
+    <stock>100</stock>
   </product>
+  <product>1</product>
   <product>
-    <id>qefqf</id>
-    <name>sefesf</name>
+    <id>3</id>
+    <name>Product Three</name>
+    <description>Third product description</description>
+    <price>20.99</price>
+    <category>Category C</category>
+    <stock>300</stock>
   </product>
 </products>

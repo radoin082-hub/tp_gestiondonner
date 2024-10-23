@@ -70,7 +70,7 @@ namespace BlazorApp1.Services
 
 
 
-        public void editProduct(string path, Product product)
+        public void deleteProduct(string path, Product product)
         {
             try
             {
@@ -78,17 +78,12 @@ namespace BlazorApp1.Services
 
 
 
-               /* var productsXML = xmlDoc.Descendants("product").FirstOrDefault(p => (string)p.Element("id") =="5");
-
-                *//*   productsXML.Element("id")?.SetValue("5");*//*
-                productsXML.Remove();
-             */
-
+                var productsXML = xmlDoc.Descendants("product").FirstOrDefault(p => (string)p.Element("id").Value == product.id);
+                productsXML.SetValue("1");
+               /* productsXML.Remove();*/
                 xmlDoc.Save(path);
-                Env.Load("key.env");
-                 path = Env.GetString("xmlkey");
-                Console.WriteLine(path);
-               
+             
+
             }
             catch (Exception e)
             {

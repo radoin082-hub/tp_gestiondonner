@@ -9,20 +9,23 @@
 
         <thead>
             <tr>
-                <th>name</th>
                 <th>id</th>
+                <th>name</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var product in products)
             {
                 <tr>
-                    <td>@product.name</td>
+                    
                     <td>@product.id</td>
+                    <td>@product.name</td>
                     <td>@product.description</td>
                     <td>@product.price</td>
                     <td>@product.category</td>
                     <td>@product.stock</td>
+                    <td><button @onclick="() => deletedata(product.id)"><i>delete</i></button></td>
+                    <td><button @=""><i>edit</i></button></td>
                 </tr>
             }
         </tbody>
@@ -31,22 +34,17 @@
 }
 
 <button @onclick="IncrementCount">Get</button>
-<div>
+@* <div>
     <input type="text" @bind="productName" />
     <input type="text" @bind="productId" />
     <input type="text" />
     <input type="text" />
     <input type="text" />
     <input type="text" />
-    <button @onclick="addproducts">add</button>
+    <button ">add</button>
+ *@
 
-</div>
-<div>
-   
-    <input type="text" />
-    <button @onclick="editdata">edit</button>
 
-</div>
 
 @code{
 
@@ -69,9 +67,11 @@
         productService.addProduct("file.xml", new Product(productName, productId, "", "", "",""));
 
     }
-    private void editdata()
+    private void deletedata(string id) 
     {
-        productService.editProduct("file.xml", new Product(productName, productId, "", "", "", ""));
+        var productToDelete = products.FirstOrDefault(p => p.id.Equals(id));
+
+        productService.deleteProduct("file.xml", productToDelete);
 
     }
 
