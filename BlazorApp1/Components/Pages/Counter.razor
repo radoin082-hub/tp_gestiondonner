@@ -1,104 +1,118 @@
-﻿@page "/counter"
+﻿@page "/product"
 @rendermode InteractiveServer
 @using BlazorApp1.Services
-<PageTitle>Counter</PageTitle>
+<PageTitle>Products</PageTitle>
 
-@if (products != null)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Stock</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in products)
-            {
+
+<div class="cont">
+    <div class="sidebar">
+
+        <NavMenu></NavMenu>
+
+    </div>
+
+    @if (products != null)
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@product.id</td>
-                    <td>@product.name</td>
-                    <td>@product.description</td>
-                    <td>@product.price</td>
-                    <td>@product.category</td>
-                    <td>@product.stock</td>
-                    <td>
-                    <td>
-                        <button class="btn btn-primary" @onclick="() => Editing(product)">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-danger" @onclick="() => DeleteData(product.id)">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
-
-                    </td>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var product in products)
+                {
+                    <tr>
+                        <td class="a">@product.id</td>
+                        <td class="a">@product.name</td>
+                        <td class="a">@product.description</td>
+                        <td class="a">@product.price</td>
+                        <td class="a">@product.category</td>
+                        <td class="a">@product.stock</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="() => Editing(product)">
+                                <img src="icon/icon-edit.png" alt="Edit" style="width: 23px; height: 23px;" />
+                            </button>
+                            <button class="btn btn-danger" @onclick="() => DeleteData(product.id)">
+                                <img src="icon/icon-delete.png" alt="Delete" style="width: 23px; height: 23px;" />
+                            </button>
+                        </td>
 
-<button @onclick="LoadProducts">Load Products</button>
-<button @onclick="AddProduct">add produvt</button>
 
 
-@if (isAdding)
-{
-    <div class="modal">
-        <div class="modal-content">
-            <h2>Add Product</h2>
-            <input type="text" @bind="newProductName" placeholder="Product Name" />
-            @* <input type="text" @bind="newProductId" placeholder="Product ID" /> *@
-            <input type="text" @bind="newProductDescription" placeholder="Description" />
-            <input type="text" @bind="newProductPrice" placeholder="Price" />
-            <input type="text" @bind="newProductCategory" placeholder="Category" />
-            <input type="text" @bind="newProductStock" placeholder="Stock" />
-            <button @onclick="AddProduct">Add</button>
-            <button @onclick="() => isAdding = false">Cancel</button>
+
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+
+    <button @onclick="LoadProducts">Load Products</button>
+    <button class="btn btn-primary" @onclick="AddProduct">add produvt</button>
+
+
+    @if (isAdding)
+    {
+        <div class="modal">
+            <div class="modal-content">
+                <h2>Add Product</h2>
+                <input type="text" @bind="newProductName" placeholder="Product Name" />
+                @* <input type="text" @bind="newProductId" placeholder="Product ID" /> *@
+                <input type="text" @bind="newProductDescription" placeholder="Description" />
+                <input type="text" @bind="newProductPrice" placeholder="Price" />
+                <input type="text" @bind="newProductCategory" placeholder="Category" />
+                <input type="text" @bind="newProductStock" placeholder="Stock" />
+                <button @onclick="AddProduct">Add</button>
+                <button @onclick="() => isAdding = false">Cancel</button>
+            </div>
         </div>
-    </div>
-}
+    }
 
 
-@if (isEditing)
-{
-    <div class="modal">
-        <div class="modal-content">
-            <h2>Edit Product</h2>
-            <input type="text" @bind="selectedProduct.name" placeholder="Product Name" />
-            @* <input type="text" @bind="selectedProduct.id" placeholder="Product ID" disabled /> *@
-            <input type="text" @bind="selectedProduct.description" placeholder="Description" />
-            <input type="text" @bind="selectedProduct.price" placeholder="Price" />
-            <input type="text" @bind="selectedProduct.category" placeholder="Category" />
-            <input type="text" @bind="selectedProduct.stock" placeholder="Stock" />
-            <button @onclick="UpdateProduct">Update</button>
-            <button @onclick="() => isEditing = false">Cancel</button>
+    @if (isEditing)
+    {
+        <div class="modal">
+            <div class="modal-content">
+                <h2>Edit Product</h2>
+                <input type="text" @bind="selectedProduct.name" placeholder="Product Name" />
+                @* <input type="text" @bind="selectedProduct.id" placeholder="Product ID" disabled /> *@
+                <input type="text" @bind="selectedProduct.description" placeholder="Description" />
+                <input type="text" @bind="selectedProduct.price" placeholder="Price" />
+                <input type="text" @bind="selectedProduct.category" placeholder="Category" />
+                <input type="text" @bind="selectedProduct.stock" placeholder="Stock" />
+                <button @onclick="UpdateProduct">Update</button>
+                <button @onclick="() => isEditing = false">Cancel</button>
+            </div>
         </div>
-    </div>
-}
+    }
+</div>
+
 @code {
     private int currentCount = 0;
     private ProductService productService = new ProductService();
     private List<Product> products;
 
-   
+
     private bool isAdding = false;
     private string newProductName, newProductId, newProductDescription, newProductPrice, newProductCategory, newProductStock;
 
-  
+
     private bool isEditing = false;
     private Product selectedProduct;
 
     private void LoadProducts()
     {
         currentCount++;
-        products = productService.ReadProducts("file.xml");
+        products = productService.ReadProducts("product.xml");
+        Console.Write(products);
     }
 
     private void Editing()
@@ -116,15 +130,14 @@
             !string.IsNullOrWhiteSpace(newProductCategory) &&
             !string.IsNullOrWhiteSpace(newProductStock))
         {
-           
+
             string nextId = auto_increment();
 
-           
+
             var newProduct = new Product(newProductName, nextId, newProductDescription, newProductPrice, newProductCategory, newProductStock);
-            productService.AddProduct("file.xml", newProduct);
-            rest();
-            LoadProducts(); 
-           
+            productService.AddProduct("product.xml", newProduct);
+            products.Add(newProduct);   
+
         }
     }
 
@@ -138,7 +151,7 @@
     {
         if (selectedProduct != null)
         {
-             productService.UpdateProduct("file.xml", selectedProduct);
+            productService.UpdateProduct("product.xml", selectedProduct);
             LoadProducts();
             isEditing = false; 
         }
@@ -149,7 +162,7 @@
         var productToDelete = products.FirstOrDefault(p => p.id.Equals(id));
         if (productToDelete != null)
         {
-            productService.DeleteProduct("file.xml", productToDelete);
+            productService.DeleteProduct("product.xml", productToDelete);
             LoadProducts();
         }
     }

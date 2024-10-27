@@ -1,0 +1,53 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@inject LoginServices Service_Login
+
+<section class="login-page">
+    <form class="loginform" @onsubmit="login">
+        <input type="text" @bind="email" placeholder="Email" required />
+        <input type="password" @bind="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <p style="color:red">@ErrorMessage</p>
+    }
+</section>
+
+@code {
+    private string email;
+    private string password;
+    private string ErrorMessage;
+   
+    private async Task login()
+    {
+        var user = Service_Login.AuthenticateUser("login.xml", email, password);
+
+        if (user != null)
+        {
+           
+            await PopSuccess();
+            
+            NavigationManager.NavigateTo("/product");
+        }
+        else
+        {
+            ErrorMessage = "Account does not exist !!";
+        }
+    }
+
+    private async Task PopSuccess()
+    {
+        await JS.InvokeVoidAsync("Swal.fire", new
+        {
+            title = "Hello!",
+            text = "Login successful!",
+            icon = "success",
+            showConfirmButton = false,
+            timer = 2500
+        });
+    }
+}

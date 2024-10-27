@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<products>
+  <product>
+    <id>1</id>
+    <name>Product A</name>
+    <description>High-quality product</description>
+    <price>29.99</price>
+    <category>Electronics</category>
+    <stock>150</stock>
+  </product>
+  <product>
+    <id>2</id>
+    <name>Product B</name>
+    <description>Product B is an excellent choice for home use.</description>
+    <price>15.99</price>
+    <category>Home</category>
+    <stock>85</stock>
+  </product>
+  <product>
+    <id>3</id>
+    <name>Product C</name>
+    <description>A compact and efficient product C for travel.</description>
+    <price>45.50</price>
+    <category>Travel</category>
+    <stock>200</stock>
+  </product>
+  <product>
+    <id>4</id>
+    <name>Product D</name>
+    <description>Product D with advanced features for professionals.</description>
+    <price>120.00</price>
+    <category>Professional</category>
+    <stock>40</stock>
+  </product>
+  <product>
+    <id>5</id>
+    <name>floyd</name>
+    <description>drog</description>
+    <price>2333</price>
+    <category>drugs</category>
+    <stock>0</stock>
+  </product>
+  <product>
+    <id>6</id>
+    <name>qwdqwd</name>
+    <description>ad</description>
+    <price>2323</price>
+    <category>efwef</category>
+    <stock>ef</stock>
+  </product>
+  <product>
+    <id>9</id>
+    <name>Floyed Blazored</name>
+    <description>Probilem Cyborg</description>
+    <price>1200</price>
+    <category>Nigroid</category>
+    <stock>0</stock>
+  </product>
+</products>
